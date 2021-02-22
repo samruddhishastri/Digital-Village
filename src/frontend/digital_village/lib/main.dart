@@ -11,10 +11,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Digital Village',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.orange,
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      // ),
       home: WelcomeScreen(),
     );
   }
