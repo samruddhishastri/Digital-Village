@@ -6,6 +6,7 @@ import '../../../components/rounded_input_field.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../components/rounded_password_field.dart';
 import '../../../constants.dart';
+import '../../../Screens/Signup/components/qrcode.dart';
 import '../../../components/floating_action_buttoncus.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -65,7 +66,16 @@ class Body extends StatelessWidget {
             ),
             RoundedButton(
               text: "Register",
-              press: () {},
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
             ),
             // SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
@@ -91,7 +101,16 @@ class Body extends StatelessWidget {
               // onPressed: Null,// On press per qrcode code wala karna
               child: Icon(Icons.qr_code),
               backgroundColor: kPrimaryColor,
-              // onPressed: ,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Qrcode();
+                    },
+                  ),
+                );
+              },
             ),
             );
   }
