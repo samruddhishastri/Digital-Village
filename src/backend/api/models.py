@@ -80,8 +80,8 @@ class Role(models.Model):
 
 class UserAddress(models.Model):
     user_address_id = models.AutoField(primary_key=True)
-    dv_user = models.ForeignKey(DvUser, models.DO_NOTHING, blank=True, null=True)
-    user_details = models.ForeignKey('UserDetails', models.DO_NOTHING, blank=True, null=True)
+    dv_user = models.ForeignKey(DvUser, models.CASCADE, blank=True, null=True)
+    user_details = models.ForeignKey('UserDetails', models.CASCADE, blank=True, null=True)
     houseno = models.CharField(max_length=200, blank=True, null=True)
     wardno = models.CharField(max_length=200, blank=True, null=True)
     street = models.CharField(max_length=200, blank=True, null=True)
@@ -94,13 +94,13 @@ class UserAddress(models.Model):
 
 class UserDetails(models.Model):
     user_details_id = models.AutoField(primary_key=True)
-    dv_user = models.ForeignKey(DvUser, models.DO_NOTHING, blank=True, null=True)
+    dv_user = models.ForeignKey(DvUser, models.CASCADE, blank=True, null=True)
     firstname = models.CharField(max_length=150)
     lastname = models.CharField(max_length=150, blank=True, null=True)
     aadhaarno = models.BigIntegerField(blank=True, null=True)
     mobileno = models.BigIntegerField(blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
-    user_address = models.ForeignKey(UserAddress, models.DO_NOTHING, blank=True, null=True)
+    user_address = models.ForeignKey(UserAddress, models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = 'user_details'
@@ -109,8 +109,8 @@ class UserDetails(models.Model):
 
 class UserPaymentsReminders(models.Model):
     user_payments_id = models.AutoField(primary_key=True)
-    payment = models.ForeignKey(PaymentReminders, models.DO_NOTHING, blank=True, null=True)
-    user_address = models.ForeignKey(UserAddress, models.DO_NOTHING, blank=True, null=True)
+    payment = models.ForeignKey(PaymentReminders, models.CASCADE, blank=True, null=True)
+    user_address = models.ForeignKey(UserAddress, models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=200, blank=True, null=True)
     totalamount = models.FloatField(blank=True, null=True)
     paid = models.FloatField(blank=True, null=True)
@@ -124,8 +124,8 @@ class UserPaymentsReminders(models.Model):
 
 class UserRoles(models.Model):
     user_role_id = models.AutoField(primary_key=True)
-    role = models.ForeignKey(Role, models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(DvUser, models.DO_NOTHING, blank=True, null=True)
+    role = models.ForeignKey(Role, models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(DvUser, models.CASCADE, blank=True, null=True)
 
     class Meta:
         db_table = 'user_roles'
@@ -133,7 +133,7 @@ class UserRoles(models.Model):
 
 class WardRepresentative(models.Model):
     ward_rep_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(DvUser, models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(DvUser, models.CASCADE, blank=True, null=True)
     wardno = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
