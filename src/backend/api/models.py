@@ -1,12 +1,19 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+from phonenumber_field.modelfields import PhoneNumberField
+from datetime import date
+import calendar
+import bcrypt
+import string
+import random
+import subprocess
+import tempfile
+import os
 
 from django.db import models
+from django.core.files import File
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 class Announcement(models.Model):
@@ -47,7 +54,7 @@ class Complaints(models.Model):
 class DvUser(models.Model):
     dv_user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=150)
-    password = models.CharField(max_length=150)
+    password = models.CharField(max_length=150, editable=True)
     ispasswordreset = models.BooleanField()
     loginrequired = models.BooleanField(blank=True, null=True)
     scandumpdata = models.CharField(max_length=1000, blank=True, null=True)
@@ -98,7 +105,7 @@ class UserDetails(models.Model):
     firstname = models.CharField(max_length=150)
     lastname = models.CharField(max_length=150, blank=True, null=True)
     aadhaarno = models.BigIntegerField(blank=True, null=True)
-    mobileno = models.BigIntegerField(blank=True, null=True)
+    mobileno = PhoneNumberField(blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     user_address = models.ForeignKey(UserAddress, models.CASCADE, blank=True, null=True)
 
