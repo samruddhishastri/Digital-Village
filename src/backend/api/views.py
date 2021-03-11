@@ -47,7 +47,7 @@ import bcrypt
 import random
 import string
 import json
-
+import xmltodict
 from django.views.decorators.csrf import csrf_exempt
 import django.db
 
@@ -57,8 +57,12 @@ import base64
 @authentication_classes([])
 @permission_classes([])
 def register_user_scan(request):
-    data = request.data.copy()
-    print(data)
+    data_xml = request.data.copy()
+    print(data_xml)
+    data_dict = xmltodict.parse(xml_file.read())
+    json_data = json.dumps(data_dict)
+    print(json_data)
+
     return Response("Success", status=status.HTTP_201_CREATED)
 
 @api_view(["POST"])
