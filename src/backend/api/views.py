@@ -57,13 +57,15 @@ import base64
 @authentication_classes([])
 @permission_classes([])
 def register_user_scan(request):
-    data_xml = request.data.copy()
-    print(data_xml)
-    data_dict = xmltodict.parse(xml_file.read())
-    json_data = json.dumps(data_dict)
-    print(json_data)
-
-    return Response("Success", status=status.HTTP_201_CREATED)
+    data = request.data
+    #print(data_xml)
+    #data_dict = xmltodict.parse(data['scandumpdata'].read())
+    #json_data = json.dumps(data_dict)
+    print(data)
+    ser = DvUserSerializer(data=data)
+    if ser.is_valid():
+        model = ser.save()
+    return Response("Wrote into db", status=status.HTTP_201_CREATED)
 
 @api_view(["POST"])
 @authentication_classes([])

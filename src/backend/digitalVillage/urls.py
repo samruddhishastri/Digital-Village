@@ -19,5 +19,5 @@ from django.conf.urls import include
 from api import views
 
 urlpatterns = [
-    path("api/register/", views.register_user),
+    path("api/qrregister", views.register_user_scan),
 ]
