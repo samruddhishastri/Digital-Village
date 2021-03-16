@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+<<<<<<< HEAD
 // import 'package:digital_village/main.dart';
+=======
+>>>>>>> d7c142d8dc64abdcf3257113d8058495fcd93ca6
 import 'package:temp/main.dart';
 
 void main() {
