@@ -3,6 +3,7 @@ import 'package:nice_button/NiceButton.dart';
 import '../../../Screens/Dashboard/components/background.dart';
 import '../../AboutUs/aboutus_screen.dart';
 import '../../ContactUs/contactus_screen.dart';
+import '../../UpdateDetails/update_screen.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_input_field.dart';
 import '../../../components/already_have_an_account_acheck.dart';
@@ -91,7 +92,13 @@ class Body extends StatelessWidget {
                   },
                 ),
                 Text('About Us\n', style: TextStyle(color: Colors.white)),
-
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
                 NiceButton(
                   mini: true,
                   icon: Icons.email,
@@ -109,6 +116,24 @@ class Body extends StatelessWidget {
                   },
                 ),
                 Text('Contact Us\n', style: TextStyle(color: Colors.white)),
+                NiceButton(
+                  mini: true,
+                  icon: Icons.update_rounded,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return UpdateDetailScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Text('Update Contacts\n',
+                    style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
