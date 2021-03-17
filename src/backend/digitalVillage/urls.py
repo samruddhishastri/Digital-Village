@@ -20,4 +20,9 @@ from api import views
 
 urlpatterns = [
     path("api/qrregister", views.register_user_scan),
+    path("api/register", views.register_user),
+    path("api/login", views.login_user),
+    path("api/make_complaint", views.make_complaint),
+    path("api/view_complaints/", views.ViewComplaints.as_view()),
+    path("api/detail_complaint/<int:pk>/", views.DetailComplaint.as_view()),
 ]

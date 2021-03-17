@@ -1,5 +1,5 @@
 from rest_framework import authentication, exceptions
-
+from api.models import DvUser, Session
 
 class CustomTokenAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):

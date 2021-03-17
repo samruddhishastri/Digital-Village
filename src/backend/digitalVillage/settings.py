@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'phonenumber_field',
     'rest_framework',
-    'api'
+    'api',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -79,10 +80,10 @@ WSGI_APPLICATION = 'digitalVillage.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'digitalvillage',
+        'NAME': 'digital_village',
         "USER": "postgres",
         "HOST": "127.0.0.1",
-        "PASSWORD": "password",
+        "PASSWORD": "passwd",
     }
 }
 
@@ -124,7 +125,7 @@ REST_FRAMEWORK = {
         "api.authentication.CustomTokenAuthentication"
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated"
+        "rest_framework.permissions.IsAdminUser"
     ],
 }
 

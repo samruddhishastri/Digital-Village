@@ -39,7 +39,7 @@ class DvUserSerializer(serializers.ModelSerializer):
     
     class Meta:
         fields = "__all__"
-        extra_kwargs = {"password": {"write_only": True}}
+        #extra_kwargs = {"password": {"write_only": True}}
         model = DvUser
 
 

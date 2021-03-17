@@ -88,7 +88,6 @@ class Role(models.Model):
 class UserAddress(models.Model):
     user_address_id = models.AutoField(primary_key=True)
     dv_user = models.ForeignKey(DvUser, models.CASCADE, blank=True, null=True)
-    user_details = models.ForeignKey('UserDetails', models.CASCADE, blank=True, null=True)
     houseno = models.CharField(max_length=200, blank=True, null=True)
     wardno = models.CharField(max_length=200, blank=True, null=True)
     street = models.CharField(max_length=200, blank=True, null=True)
@@ -145,3 +144,7 @@ class WardRepresentative(models.Model):
 
     class Meta:
         db_table = 'ward_representative'
+
+class Session(models.Model):
+    user = models.ForeignKey(DvUser, models.CASCADE)
+    key = models.CharField(max_length=64)
