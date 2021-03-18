@@ -48,7 +48,7 @@ import bcrypt
 import random
 import string
 import json
-
+import xmltodict
 from django.views.decorators.csrf import csrf_exempt
 import django.db
 
@@ -60,12 +60,15 @@ import base64
 def register_user_scan(request):
     data = request.data.copy()
     print(data)
-    ser = DvUserSerializer(data=data)
-    if ser.is_valid():
-        model = ser.save()
-    N = 8
-    res = ''.join(random.choices(string.ascii_uppercase + string.digits, k = N)) 
-    return Response(res, status=status.HTTP_201_CREATED)
+    # parsed_data = xmltodict.parse(data["xml_str"])
+    # return Response(data, status=status.HTTP_201_CREATED)
+
+    # ser = DvUserSerializer(data=data)
+    # if ser.is_valid():
+    #     model = ser.save()
+    # N = 8
+    # res = ''.join(random.choices(string.ascii_uppercase + string.digits, k = N)) 
+    # return Response(res, status=status.HTTP_201_CREATED)
 
 @api_view(["POST"])
 @authentication_classes([])
@@ -78,12 +81,8 @@ def register_user(request):
         err["username"] = ["This field is required."]
     if "firstname" not in request.data:
         err["firstname"] = ["This field is required."]
-    if "lastname" not in request.data:
-        err["lastname"] = ["This field is required."]
     if "dob" not in request.data:
         err["dob"] = ["This field is required."]
-    if "mobileno" not in request.data:
-        err["mobileno"] = ["This field is required."]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
 
@@ -128,6 +127,7 @@ def register_user(request):
             aadhaarno=data["aadharno"],
             mobileno = data["mobileno"],
             dob = data["dob"],
+            profession = data["profession"],
             user_address = user_address
         )
         user_details.save()
@@ -169,6 +169,8 @@ def login_user(request):
         )
 
 @api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
 def make_complaint(request):
     data = request.data.copy()
     print(data)
@@ -179,25 +181,59 @@ def make_complaint(request):
         err["description"] = ["This field is required."]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
-    new_complaint = Complaint(
+    new_complaint = Complaints(
         name=data["name"],
         description=data["description"],
-        attachment_link = data["attachmnt_link"], 
+        attachmentlink = data["attachment_link"], 
         status = "Registered",
         notes = data["notes"],
         category = data["category"]
     )
     new_complaint.save()
-    ser = ComplaintSerializer(new_user)
+    ser = ComplaintsSerializer(new_complaint)
     return Response(ser.data, status=status.HTTP_201_CREATED)
 
+@authentication_classes([])
+@permission_classes([])
 class ViewComplaints(generics.ListCreateAPIView):
     serializer_class = ComplaintsSerializer
     queryset = Complaints.objects.all()
 
-
+@authentication_classes([])
+@permission_classes([])
 class DetailComplaint(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ComplaintsSerializer
     queryset = Complaints.objects.all()
 
 
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def update_details(request):
+    data = request.data.copy()
+    print(data)
+    err = {}
+    if "address" not in request.data:
+        err["address"] = ["This field is required."]
+    if "mobileno" not in request.data:
+        err["mobileno"] = ["This field is required."]
+    if "profession" not in request.data:
+        err["profession"] = ["This field is required."]
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = DvUser.objects.get(username=request.data["username"])
+        #user_address = UserAddress.objects.get(user=user)
+        user_details = UserDetails.objects.get(dv_user=user)
+        user_details.mobileno = data["mobileno"]
+        user_details.profession = data["profession"]
+        user_details.save()
+
+        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+
+    except DvUser.DoesNotExist:
+        return Response(
+            data={"username": ["No such username exists."]},
+            status=status.HTTP_400_BAD_REQUEST,
+        )

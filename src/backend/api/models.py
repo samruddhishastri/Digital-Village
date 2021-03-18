@@ -107,7 +107,8 @@ class UserDetails(models.Model):
     mobileno = PhoneNumberField(blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     user_address = models.ForeignKey(UserAddress, models.CASCADE, blank=True, null=True)
-
+    profession = models.CharField(max_length=150, blank=True, null=True)
+    
     class Meta:
         db_table = 'user_details'
         unique_together = (('aadhaarno', 'mobileno'),)
