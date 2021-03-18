@@ -74,8 +74,9 @@ def register_user_scan(request):
 @authentication_classes([])
 @permission_classes([])
 def register_user(request):
-    data = request.data.copy()
+    data = review_complaintsquest.data.copy()
     print(data)
+    #print("You are in register user method")
     err = {}
     if "username" not in request.data:
         err["username"] = ["This field is required."]
@@ -205,6 +206,17 @@ class DetailComplaint(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ComplaintsSerializer
     queryset = Complaints.objects.all()
 
+@authentication_classes([])
+@permission_classes([])
+class RetrieveAllUsers(generics.ListCreateAPIView):
+    serializer_class = UserDetailsSerializer
+    queryset = UserDetails.objects.all()
+
+@authentication_classes([])
+@permission_classes([])
+class RetrieveOneUser(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserDetailsSerializer
+    queryset = UserDetails.objects.all()
 
 @api_view(["POST"])
 @authentication_classes([])
@@ -217,8 +229,8 @@ def update_details(request):
         err["address"] = ["This field is required."]
     if "mobileno" not in request.data:
         err["mobileno"] = ["This field is required."]
-    if "profession" not in request.data:
-        err["profession"] = ["This field is required."]
+    # if "profession" not in request.data:
+    #     err["profession"] = ["This field is required."]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
 
@@ -227,8 +239,37 @@ def update_details(request):
         #user_address = UserAddress.objects.get(user=user)
         user_details = UserDetails.objects.get(dv_user=user)
         user_details.mobileno = data["mobileno"]
-        user_details.profession = data["profession"]
+        #user_details.profession = data["profession"]
         user_details.save()
+
+        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+
+    except DvUser.DoesNotExist:
+        return Response(
+            data={"username": ["No such username exists."]},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def add_admin(request):
+    data = request.data.copy()
+    print(data)
+    err = {}
+    if "username" not in request.data:
+        err["username"] = ["This field is required."]
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = DvUser.objects.get(username=request.data["username"])
+        #user_address = UserAddress.objects.get(user=user)
+        user_roles = UserRoles.objects.get(user_id=user)
+        assignrole = Role.objects.get(name="admin")
+        user_roles.role = assignrole
+        
+        user_roles.save()
 
         return Response("Success", status=status.HTTP_400_BAD_REQUEST)
 

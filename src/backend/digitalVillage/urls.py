@@ -28,4 +28,7 @@ urlpatterns = [
     path("api/detail_complaint/<int:pk>/", views.DetailComplaint.as_view()),
     path("api/update_details/", views.update_details),
     #path('api-token-auth/', views.obtain_auth_token, name='api-tokn-auth'), 
+    path("api/retrieve_all_users", views.RetrieveAllUsers.as_view()),
+    path("api/retrieve_one_user/<int:pk>/", views.RetrieveOneUser.as_view()),
+    path("api/add_admin/", views.add_admin),
 ]
