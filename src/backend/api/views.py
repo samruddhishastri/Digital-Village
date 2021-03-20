@@ -180,13 +180,15 @@ def make_complaint(request):
         err["name"] = ["This field is required."]
     if "description" not in request.data:
         err["description"] = ["This field is required."]
+
+    
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     new_complaint = Complaints(
         name=data["name"],
         description=data["description"],
         attachmentlink = data["attachment_link"], 
-        status = "Registered",
+        status = 'open',
         notes = data["notes"],
         category = data["category"]
     )
@@ -235,14 +237,7 @@ class MultipleFieldLookupMixin(object):
         self.check_object_permissions(self.request, obj)
         return obj
 
-# @authentication_classes([])
-# @permission_classes([])
-# class ViewContacts(generics.ListCreateAPIView):
-#     #serializer_class = UserRolesSerializer
-#     queryset1 = UserRoles.objects.all()
-#     serializer_class = UserDetails
-#     queryset = queryset1.user_id
-#     #lookup_fields = ["user_id","profession","mobileno"]
+
 
 
 @api_view(["POST"])
@@ -282,29 +277,7 @@ def update_details(request):
 @permission_classes([])
 def add_admin(request):
     
-    # print(data)
-    # err = {}
-    # if "username" not in request.data:
-    #     err["username"] = ["This field is required."]
-    # if err:
-    #     return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
 
-    # try:
-    #     user = DvUser.objects.get(username=request.data["username"])
-    #     #user_address = UserAddress.objects.get(user=user)
-    #     user_roles = UserRoles.objects.get(user_id=user)
-    #     assignrole = Role.objects.get(name="admin")
-    #     user_roles.role = assignrole
-        
-    #     user_roles.save()
-
-    #     return Response("Success", status=status.HTTP_400_BAD_REQUEST)
-
-    # except DvUser.DoesNotExist:
-    #     return Response(
-    #         data={"username": ["No such username exists."]},
-    #         status=status.HTTP_400_BAD_REQUEST,
-    #     )
     data = request.data.copy()
     print(data)
     #print("You are in register user method")
@@ -344,5 +317,37 @@ def add_admin(request):
 
         ser = UserRolesSerializer(new_admin)
         return Response("ok", status=status.HTTP_201_CREATED)
+
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def update_complaint_status(request):
+    data = request.data.copy()
+    print(data)
+    err = {}
+    
+    if "complaint_id" not in request.data:
+        err["complaint_id"] = ["This field is required."]
+    if "status" not in request.data:
+        err["status"] = ["This field is required."]
+    
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        comp = Complaints.objects.get(complaint_id=request.data["complaint_id"])
+        #user_address = UserAddress.objects.get(user=user)
+        
+        comp.status = data["status"]
+        #user_details.profession = data["profession"]
+        comp.save()
+
+        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+
+    except Complaints.DoesNotExist:
+        return Response(
+            data={"complaint_id": ["No such complaint_id exists."]},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
