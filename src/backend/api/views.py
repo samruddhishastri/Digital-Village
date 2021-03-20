@@ -180,13 +180,20 @@ def make_complaint(request):
         err["name"] = ["This field is required."]
     if "description" not in request.data:
         err["description"] = ["This field is required."]
+
+    
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     new_complaint = Complaints(
         name=data["name"],
         description=data["description"],
+<<<<<<< HEAD
         attachmentlink = data["attachmentlink"], 
         status = "Registered",
+=======
+        attachmentlink = data["attachment_link"], 
+        status = 'open',
+>>>>>>> 8142633421352e0aa9ae4af211fe7da342b2e2fe
         notes = data["notes"],
         category = data["category"]
     )
@@ -217,6 +224,26 @@ class RetrieveAllUsers(generics.ListCreateAPIView):
 class RetrieveOneUser(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailsSerializer
     queryset = UserDetails.objects.all()
+
+class MultipleFieldLookupMixin(object):
+    """
+    Apply this mixin to any view or viewset to get multiple field filtering
+    based on a `lookup_fields` attribute, instead of the default single field filtering.
+    """
+
+    def get_object(self):
+        queryset = self.get_queryset()  # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {}
+        for field in self.lookup_fields:
+            if self.kwargs[field]:  # Ignore empty fields.
+                filter[field] = self.kwargs[field]
+        obj = get_object_or_404(queryset, **filter)  # Lookup the object
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+
 
 @api_view(["POST"])
 @authentication_classes([])
@@ -254,27 +281,77 @@ def update_details(request):
 @authentication_classes([])
 @permission_classes([])
 def add_admin(request):
+    
+
     data = request.data.copy()
     print(data)
+    #print("You are in register user method")
     err = {}
     if "username" not in request.data:
         err["username"] = ["This field is required."]
+   
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        user = DvUser.objects.get(username=request.data["username"])
-        assignrole = Role.objects.get(name="admin")
-        user_roles = UserRoles(
-            user = user,
-            role = assignrole
-        )     
-        user_roles.save()
-
-        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+        user = DvUser.objects.get(username=request.data["username"]) 
 
     except DvUser.DoesNotExist:
         return Response(
             data={"username": ["No such username exists."]},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+    try:
+
+        user1 = UserRoles.objects.get(user_id=user)
+        return Response(
+            data={
+                "username": ["This username is already an admin."]
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    except UserRoles.DoesNotExist:
+        assignrole = Role.objects.get(name="admin").role_id
+        new_admin = UserRoles(
+            user_id=user.dv_user_id,
+            role_id=assignrole
+        )
+        new_admin.save()
+
+        ser = UserRolesSerializer(new_admin)
+        return Response("ok", status=status.HTTP_201_CREATED)
+
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def update_complaint_status(request):
+    data = request.data.copy()
+    print(data)
+    err = {}
+    
+    if "complaint_id" not in request.data:
+        err["complaint_id"] = ["This field is required."]
+    if "status" not in request.data:
+        err["status"] = ["This field is required."]
+    
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        comp = Complaints.objects.get(complaint_id=request.data["complaint_id"])
+        #user_address = UserAddress.objects.get(user=user)
+        
+        comp.status = data["status"]
+        #user_details.profession = data["profession"]
+        comp.save()
+
+        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+
+    except Complaints.DoesNotExist:
+        return Response(
+            data={"complaint_id": ["No such complaint_id exists."]},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
