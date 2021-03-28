@@ -92,13 +92,9 @@ class Body extends StatelessWidget {
                   },
                 ),
                 Text('About Us\n', style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              children: <Widget>[
+              
+          
+              
                 NiceButton(
                   mini: true,
                   icon: Icons.email,
@@ -134,9 +130,13 @@ class Body extends StatelessWidget {
                 ),
                 Text('Update Contacts\n',
                     style: TextStyle(color: Colors.white)),
-              ],
+              
+            ],
             ),
           ),
+  
+            
+          
         ]),
       ),
       // Positioned(
