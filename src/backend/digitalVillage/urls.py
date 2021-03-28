@@ -31,7 +31,7 @@ urlpatterns = [
     path("api/retrieve_all_users", views.RetrieveAllUsers.as_view()),
     path("api/retrieve_one_user/<int:pk>/", views.RetrieveOneUser.as_view()),
     path("api/add_admin/", views.add_admin),
-    #path("api/view_contacts/", views.ViewContacts.as_view()),
+    path("api/view_contacts/", views.ViewContacts.as_view()),
     path("api/update_complaint_status",  views.update_complaint_status),
     path("api/add_announcement", views.add_announcement),
     path("api/view_announcements", views.ViewAnnouncements.as_view()),

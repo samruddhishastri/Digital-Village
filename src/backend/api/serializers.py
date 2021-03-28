@@ -3,6 +3,7 @@ from api.models import (
     Announcement,
     ApplicationForms,
     Complaints,
+    Contacts,
     DvUser,
     PaymentReminders,
     Role,
@@ -34,6 +35,11 @@ class ComplaintsSerializer(serializers.ModelSerializer):
         fields = "__all__"
         model = Complaints
 
+class ContactsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = "__all__"
+        model = Contacts
 
 class DvUserSerializer(serializers.ModelSerializer):
     

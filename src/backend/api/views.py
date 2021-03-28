@@ -2,6 +2,7 @@ from api.models import (
     Announcement,
     ApplicationForms,
     Complaints,
+    Contacts,
     DvUser,
     PaymentReminders,
     Role,
@@ -16,6 +17,7 @@ from api.serializers import (
     AnnouncementSerializer,
     ApplicationFormsSerializer,
     ComplaintsSerializer,
+    ContactsSerializer,
     DvUserSerializer,
     PaymentRemindersSerializer,
     RoleSerializer,
@@ -419,3 +421,9 @@ def add_form(request):
 class ViewForms(generics.ListCreateAPIView):
     serializer_class = ApplicationFormsSerializer
     queryset = ApplicationForms.objects.all()
+
+@authentication_classes([])
+@permission_classes([])
+class ViewContacts(generics.ListCreateAPIView):
+    serializer_class = ContactsSerializer
+    queryset = Contacts.objects.all()
