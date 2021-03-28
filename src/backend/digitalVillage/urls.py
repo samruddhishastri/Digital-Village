@@ -30,11 +30,12 @@ urlpatterns = [
     #path('api-token-auth/', views.obtain_auth_token, name='api-tokn-auth'), 
     path("api/retrieve_all_users", views.RetrieveAllUsers.as_view()),
     path("api/retrieve_one_user/<int:pk>/", views.RetrieveOneUser.as_view()),
-<<<<<<< HEAD
-    path("api/add_admin", views.add_admin),
-=======
     path("api/add_admin/", views.add_admin),
     #path("api/view_contacts/", views.ViewContacts.as_view()),
     path("api/update_complaint_status",  views.update_complaint_status),
->>>>>>> 8142633421352e0aa9ae4af211fe7da342b2e2fe
+    path("api/add_announcement", views.add_announcement),
+    path("api/view_announcements", views.ViewAnnouncements.as_view()),
+    path("api/detail_announcement/<int:pk>/", views.DetailAnnouncement.as_view()),
+    path("api/add_form", views.add_form),
+    path("api/view_forms", views.ViewForms.as_view())
 ]

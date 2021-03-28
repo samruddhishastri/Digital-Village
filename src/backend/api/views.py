@@ -187,13 +187,8 @@ def make_complaint(request):
     new_complaint = Complaints(
         name=data["name"],
         description=data["description"],
-<<<<<<< HEAD
-        attachmentlink = data["attachmentlink"], 
-        status = "Registered",
-=======
         attachmentlink = data["attachment_link"], 
         status = 'open',
->>>>>>> 8142633421352e0aa9ae4af211fe7da342b2e2fe
         notes = data["notes"],
         category = data["category"]
     )
@@ -241,8 +236,6 @@ class MultipleFieldLookupMixin(object):
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
         self.check_object_permissions(self.request, obj)
         return obj
-
-
 
 
 @api_view(["POST"])
@@ -355,3 +348,74 @@ def update_complaint_status(request):
         )
 
 
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def add_announcement(request):
+    data = request.data.copy()
+    print(data)
+    err = {}
+    if "name" not in request.data:
+        err["name"] = ["This field is required."]
+    if "description" not in request.data:
+        err["description"] = ["This field is required."]
+    if "validtill" not in request.data:
+        err["validtill"] = ["This field is required."]
+    
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+    
+    new_announcement = Announcement(
+        name=data["name"],
+        description=data["description"],
+        link = data["link"],
+        validtill = data["validtill"],
+        format = data["format"],
+    )
+    new_announcement.save()
+    ser = AnnouncementSerializer(new_announcement)
+    return Response(ser.data, status=status.HTTP_201_CREATED)
+
+@authentication_classes([])
+@permission_classes([])
+class ViewAnnouncements(generics.ListCreateAPIView):
+    serializer_class = AnnouncementSerializer
+    queryset = Announcement.objects.all()
+
+@authentication_classes([])
+@permission_classes([])
+class DetailAnnouncement(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AnnouncementSerializer
+    queryset = Announcement.objects.all()
+
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def add_form(request):
+    data = request.data.copy()
+    print(data)
+    err = {}
+    if "name" not in request.data:
+        err["name"] = ["This field is required."]
+    if "description" not in request.data:
+        err["description"] = ["This field is required."]
+    if "attachmentlink" not in request.data:
+        err["attachmentlink"] = ["This field is required."]
+    
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+    
+    new_form = ApplicationForms(
+        name=data["name"],
+        description=data["description"],
+        attachmentlink = data["attachmentlink"],
+    )
+    new_form.save()
+    ser = ApplicationFormsSerializer(new_form)
+    return Response(ser.data, status=status.HTTP_201_CREATED)
+
+@authentication_classes([])
+@permission_classes([])
+class ViewForms(generics.ListCreateAPIView):
+    serializer_class = ApplicationFormsSerializer
+    queryset = ApplicationForms.objects.all()

@@ -14,6 +14,8 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from django.utils.timezone import now
+from datetime import datetime
 
 
 class Announcement(models.Model):
@@ -23,6 +25,7 @@ class Announcement(models.Model):
     validtill = models.DateField(blank=True, null=True)
     format = models.CharField(max_length=100, blank=True, null=True)
     link = models.CharField(max_length=1000, blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
         db_table = 'announcement'
@@ -33,6 +36,7 @@ class ApplicationForms(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True)
     description = models.CharField(max_length=1500, blank=True, null=True)
     attachmentlink = models.CharField(max_length=1000, blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
         db_table = 'application_forms'
@@ -46,6 +50,7 @@ class Complaints(models.Model):
     status = models.CharField(max_length=50, blank=True, null=True)
     notes = models.CharField(max_length=1000, blank=True, null=True)
     category = models.CharField(max_length=200, blank=True, null=True)
+    creation_date = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
         db_table = 'complaints'
