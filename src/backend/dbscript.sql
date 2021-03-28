@@ -405,7 +405,8 @@ ALTER TABLE public.user_roles OWNER TO postgres;
 --
 
 CREATE VIEW public.contacts AS
- SELECT user_roles.user_id,
+ SELECT row_number() OVER () AS id,
+    user_roles.user_id,
     user_details.firstname,
     user_details.lastname,
     user_details.mobileno,
@@ -1049,6 +1050,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 --
 
 COPY public.dv_user (dv_user_id, username, password, ispasswordreset, loginrequired, scandumpdata) FROM stdin;
+1	abc	$2b$12$exbtTp5SAW5JscYp/zZ.c.pDfPIqRF.1Y3qO.6QWBCIa4dox5NLwm	f	t	\N
 \.
 
 
@@ -1198,7 +1200,7 @@ SELECT pg_catalog.setval('public.django_migrations_id_seq', 5, true);
 -- Name: dv_user_dv_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.dv_user_dv_user_id_seq', 1, false);
+SELECT pg_catalog.setval('public.dv_user_dv_user_id_seq', 1, true);
 
 
 --

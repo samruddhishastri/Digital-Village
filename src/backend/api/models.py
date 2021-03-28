@@ -153,6 +153,7 @@ class WardRepresentative(models.Model):
 		db_table = 'ward_representative'
 
 class Contacts(models.Model):
+	id = models.BigIntegerField(primary_key=True)
 	user = models.ForeignKey(DvUser, on_delete=models.DO_NOTHING, blank=True, null=True)
 	firstname = models.CharField(max_length=150)
 	lastname = models.CharField(max_length=150, blank=True, null=True)
