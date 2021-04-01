@@ -4,10 +4,8 @@ import '../../../Screens/Dashboard/components/background.dart';
 import '../../AboutUs/aboutus_screen.dart';
 import '../../ContactUs/contactus_screen.dart';
 import '../../UpdateDetails/update_screen.dart';
-import '../../../components/rounded_button.dart';
-import '../../../components/rounded_input_field.dart';
-import '../../../components/already_have_an_account_acheck.dart';
-import '../../../components/rounded_password_field.dart';
+import '../../UploadForms/upload_forms.dart';
+import '../../DownloadForms/download_forms.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
@@ -55,12 +53,6 @@ class Body extends StatelessWidget {
                 ),
                 Text('Organisation chart\n',
                     style: TextStyle(color: Colors.white)),
-                Icon(
-                  Icons.download_rounded,
-                  size: 40,
-                  color: Colors.white,
-                ),
-                Text('Download forms\n', style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
@@ -92,9 +84,7 @@ class Body extends StatelessWidget {
                   },
                 ),
                 Text('About Us\n', style: TextStyle(color: Colors.white)),
-              
-          
-              
+
                 NiceButton(
                   mini: true,
                   icon: Icons.email,
@@ -112,6 +102,7 @@ class Body extends StatelessWidget {
                   },
                 ),
                 Text('Contact Us\n', style: TextStyle(color: Colors.white)),
+
                 NiceButton(
                   mini: true,
                   icon: Icons.update_rounded,
@@ -130,13 +121,45 @@ class Body extends StatelessWidget {
                 ),
                 Text('Update Contacts\n',
                     style: TextStyle(color: Colors.white)),
-              
-            ],
+
+                NiceButton(
+                  mini: true,
+                  icon: Icons.upload_rounded,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return UploadFormsScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Text('Upload Forms\n', style: TextStyle(color: Colors.white)),
+
+                NiceButton(
+                  mini: true,
+                  icon: Icons.download_rounded,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return DownloadFormsScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Text('Download Forms\n', style: TextStyle(color: Colors.white)),
+              ],
             ),
           ),
-  
-            
-          
         ]),
       ),
       // Positioned(
