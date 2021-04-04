@@ -37,5 +37,6 @@ urlpatterns = [
     path("api/view_announcements", views.ViewAnnouncements.as_view()),
     path("api/detail_announcement/<int:pk>/", views.DetailAnnouncement.as_view()),
     path("api/add_form", views.add_form),
-    path("api/view_forms", views.ViewForms.as_view())
+    path("api/view_forms", views.ViewForms.as_view()),
+    path("api/reset_password", views.reset_password),
 ]

@@ -141,6 +141,34 @@ def register_user(request):
 @api_view(["POST"])
 @authentication_classes([])
 @permission_classes([])
+def reset_password(request):
+    err = {}
+    if "username" not in request.data:
+        err["username"] = ["This field is required."]
+    if "password" not in request.data:
+        err["password"] = ["This field is required."]
+    if "confirmpassword" not in request.data:
+        err["confirmpassword"] = ["This field is required."]
+    if data["password"]!=data["confirmpassword"]:
+        err["confirmpassword"] = ["Passwords don't match"]
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = DvUser.objects.get(username=request.data["username"])
+
+        user.password = data["password"]
+        user.save()
+
+        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+    except DvUser.DoesNotExist:
+        return Response(
+            data={"username": ["No such username exists."]},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
 def login_user(request):
     err = {}
     if "username" not in request.data:
@@ -170,6 +198,8 @@ def login_user(request):
             data={"password": ["Incorrect password."]},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
 
 @api_view(["POST"])
 @authentication_classes([])

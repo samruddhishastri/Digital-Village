@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'digitalVillage.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'digital_village',
+        'NAME': 'digitalvillage',
         "USER": "postgres",
         "HOST": "127.0.0.1",
-        "PASSWORD": "passwd",
+        "PASSWORD": "password",
     }
 }
 

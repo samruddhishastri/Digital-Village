@@ -369,54 +369,40 @@ ALTER SEQUENCE public.complaints_complaint_id_seq OWNED BY public.complaints.com
 
 
 --
--- Name: user_details; Type: TABLE; Schema: public; Owner: postgres
+-- Name: contacts; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.user_details (
-    user_details_id integer NOT NULL,
-    dv_user_id integer,
-    firstname character varying(150) NOT NULL,
-    lastname character varying(150),
-    aadhaarno bigint,
+CREATE TABLE public.contacts (
+    contact_id integer NOT NULL,
+    name character varying(200),
     mobileno bigint,
-    dob date,
-    user_address_id integer,
     profession character varying(200)
 );
 
 
-ALTER TABLE public.user_details OWNER TO postgres;
-
---
--- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.user_roles (
-    user_role_id integer NOT NULL,
-    role_id integer,
-    user_id integer
-);
-
-
-ALTER TABLE public.user_roles OWNER TO postgres;
-
---
--- Name: contacts; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW public.contacts AS
- SELECT row_number() OVER () AS id,
-    user_roles.user_id,
-    user_details.firstname,
-    user_details.lastname,
-    user_details.mobileno,
-    user_details.profession
-   FROM public.user_roles,
-    public.user_details
-  WHERE (user_roles.user_id = user_details.dv_user_id);
-
-
 ALTER TABLE public.contacts OWNER TO postgres;
+
+--
+-- Name: contacts_contact_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contacts_contact_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.contacts_contact_id_seq OWNER TO postgres;
+
+--
+-- Name: contacts_contact_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.contacts_contact_id_seq OWNED BY public.contacts.contact_id;
+
 
 --
 -- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres
@@ -685,6 +671,25 @@ ALTER SEQUENCE public.user_address_user_address_id_seq OWNED BY public.user_addr
 
 
 --
+-- Name: user_details; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_details (
+    user_details_id integer NOT NULL,
+    dv_user_id integer,
+    firstname character varying(150) NOT NULL,
+    lastname character varying(150),
+    aadhaarno bigint,
+    mobileno bigint,
+    dob date,
+    user_address_id integer,
+    profession character varying(200)
+);
+
+
+ALTER TABLE public.user_details OWNER TO postgres;
+
+--
 -- Name: user_details_user_details_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -746,6 +751,19 @@ ALTER TABLE public.user_payments_reminders_user_payments_id_seq OWNER TO postgre
 
 ALTER SEQUENCE public.user_payments_reminders_user_payments_id_seq OWNED BY public.user_payments_reminders.user_payments_id;
 
+
+--
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_roles (
+    user_role_id integer NOT NULL,
+    role_id integer,
+    user_id integer
+);
+
+
+ALTER TABLE public.user_roles OWNER TO postgres;
 
 --
 -- Name: user_roles_user_role_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -865,6 +883,13 @@ ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT n
 --
 
 ALTER TABLE ONLY public.complaints ALTER COLUMN complaint_id SET DEFAULT nextval('public.complaints_complaint_id_seq'::regclass);
+
+
+--
+-- Name: contacts contact_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contacts ALTER COLUMN contact_id SET DEFAULT nextval('public.contacts_contact_id_seq'::regclass);
 
 
 --
@@ -1017,6 +1042,14 @@ COPY public.complaints (complaint_id, name, description, attachmentlink, status,
 
 
 --
+-- Data for Name: contacts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.contacts (contact_id, name, mobileno, profession) FROM stdin;
+\.
+
+
+--
 -- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1050,6 +1083,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 --
 
 COPY public.dv_user (dv_user_id, username, password, ispasswordreset, loginrequired, scandumpdata) FROM stdin;
+4	user	$2b$12$cxVxDI9mXlC5vlga4mFyNORBlr0bWjAL/AuIAdLa6kD8HdIgk39/a	f	t	\N
 1	abc	$2b$12$exbtTp5SAW5JscYp/zZ.c.pDfPIqRF.1Y3qO.6QWBCIa4dox5NLwm	f	t	\N
 \.
 
@@ -1077,6 +1111,7 @@ COPY public.role (role_id, name) FROM stdin;
 --
 
 COPY public.user_address (user_address_id, dv_user_id, user_details_id, houseno, wardno, street, pin, landmark) FROM stdin;
+3	4	\N	12	123	ijk	1234	qwerty
 \.
 
 
@@ -1085,6 +1120,7 @@ COPY public.user_address (user_address_id, dv_user_id, user_details_id, houseno,
 --
 
 COPY public.user_details (user_details_id, dv_user_id, firstname, lastname, aadhaarno, mobileno, dob, user_address_id, profession) FROM stdin;
+1	4	xyz	abc	1234567891234545	123456789	2001-01-01	3	pqr
 \.
 
 
@@ -1101,6 +1137,7 @@ COPY public.user_payments_reminders (user_payments_id, payment_id, user_address_
 --
 
 COPY public.user_roles (user_role_id, role_id, user_id) FROM stdin;
+1	1	4
 \.
 
 
@@ -1173,6 +1210,13 @@ SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.complaints_complaint_id_seq', 1, false);
+
+
+--
+-- Name: contacts_contact_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.contacts_contact_id_seq', 1, false);
 
 
 --
@@ -1370,6 +1414,14 @@ ALTER TABLE ONLY public.auth_user
 
 ALTER TABLE ONLY public.complaints
     ADD CONSTRAINT complaints_pkey PRIMARY KEY (complaint_id);
+
+
+--
+-- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contacts
+    ADD CONSTRAINT contacts_pkey PRIMARY KEY (contact_id);
 
 
 --
