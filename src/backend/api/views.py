@@ -155,7 +155,7 @@ def reset_password(request):
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     try:
         user = DvUser.objects.get(username=request.data["username"])
-
+        user.ispasswordreset = True
         user.password = data["password"]
         user.save()
 
@@ -294,7 +294,37 @@ def update_details(request):
         user_details.profession = data["profession"]
         user_details.save()
 
-        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+        if data["add_admin"] == True:
+            try:
+
+                user1 = UserRoles.objects.get(user_id=user)
+                return Response(
+                    data={
+                        "username": ["This username is already an admin."]
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except UserRoles.DoesNotExist:
+                assignrole = Role.objects.get(name="admin").role_id
+                new_admin = UserRoles(
+                    user_id=user.dv_user_id,
+                    role_id=assignrole
+                )
+                new_admin.save()
+                ser = UserRolesSerializer(new_admin)
+
+                #insert into contacts
+                new_name = str(user_details.firstname + user_details.lastname)
+                new_contact = Contacts(
+                    name = new_name,
+                    mobileno = user_details.mobileno,
+                    profession = user_details.profession
+                    )
+                new_contact.save()
+                ser = ContactsSerializer(new_contact)
+        return Response("ok", status=status.HTTP_201_CREATED)            
+
+        
 
     except DvUser.DoesNotExist:
         return Response(
@@ -302,50 +332,50 @@ def update_details(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-@api_view(["POST"])
-@authentication_classes([])
-@permission_classes([])
-def add_admin(request):
+# @api_view(["POST"])
+# @authentication_classes([])
+# @permission_classes([])
+# def add_admin(request):
     
 
-    data = request.data.copy()
-    print(data)
-    #print("You are in register user method")
-    err = {}
-    if "username" not in request.data:
-        err["username"] = ["This field is required."]
+#     data = request.data.copy()
+#     print(data)
+#     #print("You are in register user method")
+#     err = {}
+#     if "username" not in request.data:
+#         err["username"] = ["This field is required."]
    
-    if err:
-        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
+#     if err:
+#         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
 
-    try:
-        user = DvUser.objects.get(username=request.data["username"]) 
+#     try:
+#         user = DvUser.objects.get(username=request.data["username"]) 
 
-    except DvUser.DoesNotExist:
-        return Response(
-            data={"username": ["No such username exists."]},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+#     except DvUser.DoesNotExist:
+#         return Response(
+#             data={"username": ["No such username exists."]},
+#             status=status.HTTP_400_BAD_REQUEST,
+#         )
 
-    try:
+#     try:
 
-        user1 = UserRoles.objects.get(user_id=user)
-        return Response(
-            data={
-                "username": ["This username is already an admin."]
-            },
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-    except UserRoles.DoesNotExist:
-        assignrole = Role.objects.get(name="admin").role_id
-        new_admin = UserRoles(
-            user_id=user.dv_user_id,
-            role_id=assignrole
-        )
-        new_admin.save()
+#         user1 = UserRoles.objects.get(user_id=user)
+#         return Response(
+#             data={
+#                 "username": ["This username is already an admin."]
+#             },
+#             status=status.HTTP_400_BAD_REQUEST,
+#         )
+#     except UserRoles.DoesNotExist:
+#         assignrole = Role.objects.get(name="admin").role_id
+#         new_admin = UserRoles(
+#             user_id=user.dv_user_id,
+#             role_id=assignrole
+#         )
+#         new_admin.save()
 
-        ser = UserRolesSerializer(new_admin)
-        return Response("ok", status=status.HTTP_201_CREATED)
+#         ser = UserRolesSerializer(new_admin)
+#         return Response("ok", status=status.HTTP_201_CREATED)
 
 @api_view(["POST"])
 @authentication_classes([])
@@ -457,3 +487,52 @@ class ViewForms(generics.ListCreateAPIView):
 class ViewContacts(generics.ListCreateAPIView):
     serializer_class = ContactsSerializer
     queryset = Contacts.objects.all()
+
+@api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
+def add_dependent(request):
+    data = request.data.copy()
+    print(data)
+    #print("You are in register user method")
+    err = {}
+    if "firstname" not in request.data:
+        err["firstname"] = ["This field is required."]
+    if "dob" not in request.data:
+        err["dob"] = ["This field is required."]
+    if err:
+        return Response(data=err, status=status.HTTP_400_BAD_REQUEST)       
+  
+    new_user = DvUser(
+        username= None,
+        password= None,
+        ispasswordreset = False,
+        loginrequired = False,
+        scandumpdata = None,
+    )
+    new_user.save()
+
+    user_address = UserAddress(
+        dv_user = new_user,
+        houseno = data["houseno"], 
+        wardno = data["wardno"],
+        street = data["street"],
+        pin = data["pin"],
+        landmark = data["landmark"]
+    )
+    user_address.save()
+
+    user_details = UserDetails(
+        dv_user = new_user,
+        firstname=data["firstname"],
+        lastname=data["lastname"],
+        aadhaarno=data["aadharno"],
+        mobileno = data["mobileno"],
+        dob = data["dob"],
+        profession = data["profession"],
+        user_address = user_address
+    )
+    user_details.save()
+
+    ser = DvUserSerializer(new_user)
+    return Response("Success", status=status.HTTP_201_CREATED)
