@@ -23,7 +23,8 @@ class Body extends StatelessWidget {
           children: <Widget>[
             Text(
               "LOGIN",
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
@@ -32,6 +33,7 @@ class Body extends StatelessWidget {
               onChanged: (value) {},
             ),
             RoundedPasswordField(
+              text: "Password",
               onChanged: (value) {},
             ),
             RoundedButton(

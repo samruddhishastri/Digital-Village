@@ -25,9 +25,11 @@ class Body extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03),
             RoundedPasswordField(
+              text: "Password",
               onChanged: (value) {},
             ),
             RoundedPasswordField(
+              text: "Confirm Password",
               onChanged: (value) {},
             ),
             RoundedButton(

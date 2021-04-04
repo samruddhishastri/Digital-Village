@@ -7,6 +7,7 @@ import '../../UpdateDetails/update_screen.dart';
 import '../../UploadForms/upload_forms.dart';
 import '../../DownloadForms/download_forms.dart';
 import '../../ResetPassword/reset_password.dart';
+import '../../AddAnnouncements/addannouncements_scree.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
@@ -161,7 +162,7 @@ class Body extends StatelessWidget {
 
                 NiceButton(
                   mini: true,
-                  icon: Icons.panorama_fish_eye_rounded,
+                  icon: Icons.refresh_rounded,
                   radius: 40,
                   gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
                   onPressed: () {
@@ -176,6 +177,25 @@ class Body extends StatelessWidget {
                   },
                 ),
                 Text('Reset Password\n', style: TextStyle(color: Colors.white)),
+
+                NiceButton(
+                  mini: true,
+                  icon: Icons.announcement_rounded,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AddAnnouncementsScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Text('Add Announcements\n',
+                    style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
