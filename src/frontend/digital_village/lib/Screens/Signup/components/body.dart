@@ -32,7 +32,27 @@ class Body extends StatelessWidget {
                 onChanged: (value) {},
               ),
               RoundedInputField(
-                hintText: "Address",
+                hintText: "House No.",
+                icon: Icons.house_rounded,
+                onChanged: (value) {},
+              ),
+              RoundedInputField(
+                hintText: "Ward No.",
+                icon: Icons.house_rounded,
+                onChanged: (value) {},
+              ),
+              RoundedInputField(
+                hintText: "Street",
+                icon: Icons.house_rounded,
+                onChanged: (value) {},
+              ),
+              RoundedInputField(
+                hintText: "Pincode",
+                icon: Icons.house_rounded,
+                onChanged: (value) {},
+              ),
+              RoundedInputField(
+                hintText: "Landmark",
                 icon: Icons.house_rounded,
                 onChanged: (value) {},
               ),
