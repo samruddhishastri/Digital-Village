@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class DropDownField extends StatefulWidget {
+  final Widget child;
+  const DropDownField({
+    Key key,
+    this.child,
+  }) : super(key: key);
   @override
   _DropDownFieldState createState() => _DropDownFieldState();
 }
 
 class _DropDownFieldState extends State<DropDownField> {
-  String _chosenValue;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -20,26 +23,7 @@ class _DropDownFieldState extends State<DropDownField> {
         color: kPrimaryLightColor,
         borderRadius: BorderRadius.circular(29),
       ),
-      child: DropdownButton<String>(
-        isExpanded: true,
-        value: _chosenValue,
-        style: TextStyle(color: Colors.black),
-        items: <String>['pdf', 'mp3', 'mp4']
-            .map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        hint: Text(
-          "Please choose a format",
-        ),
-        onChanged: (String value) {
-          setState(() {
-            _chosenValue = value;
-          });
-        },
-      ),
+      child: widget.child,
     );
   }
 }

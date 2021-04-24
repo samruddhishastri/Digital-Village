@@ -25,7 +25,7 @@ SECRET_KEY = 'm6n$b874n-=-fonfjv=%$g_gu@tl-j&issri^yk=5otf1%+c0f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework',
     'api',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,7 +85,7 @@ DATABASES = {
         'NAME': 'digital_village',
         "USER": "postgres",
         "HOST": "127.0.0.1",
-        "PASSWORD": "password",
+        "PASSWORD": "passwd",
     }
 }
 
@@ -133,3 +135,4 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+CORS_ORIGIN_ALLOW_ALL = True

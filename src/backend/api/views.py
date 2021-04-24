@@ -80,10 +80,18 @@ def register_user(request):
     print(data)
     #print("You are in register user method")
     err = {}
+    if "firstName" not in request.data:
+        err["firstName"] = ["This field is required."]
     if "username" not in request.data:
         err["username"] = ["This field is required."]
-    if "firstname" not in request.data:
-        err["firstname"] = ["This field is required."]
+    if "wardNo" not in request.data:
+        err["wardNo"] = ["This field is required."]
+    if "houseNo" not in request.data:
+        err["houseNo"] = ["This field is required."]
+    if "contact" not in request.data:
+        err["contact"] = ["This field is required."]
+    if "aadharNo" not in request.data:
+        err["aadharNo"] = ["This field is required."]
     if "dob" not in request.data:
         err["dob"] = ["This field is required."]
     if err:
@@ -115,20 +123,20 @@ def register_user(request):
 
         user_address = UserAddress(
             dv_user = new_user,
-            houseno = data["houseno"], 
-            wardno = data["wardno"],
+            houseno = data["houseNo"], 
+            wardno = data["wardNo"],
             street = data["street"],
-            pin = data["pin"],
+            pin = data["pincode"],
             landmark = data["landmark"]
         )
         user_address.save()
 
         user_details = UserDetails(
             dv_user = new_user,
-            firstname=data["firstname"],
-            lastname=data["lastname"],
-            aadhaarno=data["aadharno"],
-            mobileno = data["mobileno"],
+            firstname=data["firstName"],
+            lastname=data["lastName"],
+            aadhaarno=data["aadharNo"],
+            mobileno = data["contact"],
             dob = data["dob"],
             profession = data["profession"],
             user_address = user_address
@@ -142,25 +150,35 @@ def register_user(request):
 @authentication_classes([])
 @permission_classes([])
 def reset_password(request):
+    print(request.data)
     err = {}
     if "username" not in request.data:
         err["username"] = ["This field is required."]
+    if "curr_password" not in request.data:
+        err["curr_password"] = ["This field is required."]
     if "password" not in request.data:
         err["password"] = ["This field is required."]
     if "confirmpassword" not in request.data:
         err["confirmpassword"] = ["This field is required."]
-    if data["password"]!=data["confirmpassword"]:
+    if request.data["password"]!=request.data["confirmpassword"]:
         err["confirmpassword"] = ["Passwords don't match"]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     try:
         user = DvUser.objects.get(username=request.data["username"])
+        passwd = user.password
+        if bcrypt.hashpw(request.data["curr_password"].encode("utf-8"), user.password.encode("utf-8")) != user.password.encode("utf-8"):
+            return Response("Failure", status=status.HTTP_400_BAD_REQUEST)
         user.ispasswordreset = True
-        user.password = data["password"]
+        res_hashed = bcrypt.hashpw(
+            request.data["password"].encode("utf-8"), bcrypt.gensalt()
+        )
+        user.password = res_hashed.decode("utf-8")
         user.save()
-
-        return Response("Success", status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response("Success", status=status.HTTP_201_CREATED)
     except DvUser.DoesNotExist:
+        print("User does'nt exist")
         return Response(
             data={"username": ["No such username exists."]},
             status=status.HTTP_400_BAD_REQUEST,
@@ -170,6 +188,7 @@ def reset_password(request):
 @authentication_classes([])
 @permission_classes([])
 def login_user(request):
+    print(request.data["password"])
     err = {}
     if "username" not in request.data:
         err["username"] = ["This field is required."]
@@ -192,14 +211,12 @@ def login_user(request):
         )
         new_token = Session(user=user, key=token)
         new_token.save()
-        return Response({"token": token})
+        return Response({"token": token}, status=status.HTTP_201_CREATED)
     else:
         return Response(
             data={"password": ["Incorrect password."]},
             status=status.HTTP_400_BAD_REQUEST,
         )
-
-
 
 @api_view(["POST"])
 @authentication_classes([])
@@ -423,7 +440,8 @@ def add_announcement(request):
         err["description"] = ["This field is required."]
     if "validtill" not in request.data:
         err["validtill"] = ["This field is required."]
-    
+    if data["description"]==None or len(data["description"])==0 or data["name"]==None or len(data["name"])==0 or data["format"]==None or len(data["format"])==0:
+         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     

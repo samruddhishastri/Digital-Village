@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> url_launcher(String url) async {
   if (await canLaunch(url)) {
@@ -9,9 +10,21 @@ Future<void> url_launcher(String url) async {
   }
 }
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
+    Future<void> _getData() async {
+      var url = Uri.parse('http://127.0.0.1:8000/api/view_contacts');
+      var response = await http.get(url);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Download Forms'),
