@@ -315,12 +315,7 @@ def update_details(request):
             try:
 
                 user1 = UserRoles.objects.get(user_id=user)
-                return Response(
-                    data={
-                        "username": ["This username is already an admin."]
-                    },
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                return Response("This username is already an admin.",status=status.HTTP_400_BAD_REQUEST,)
             except UserRoles.DoesNotExist:
                 assignrole = Role.objects.get(name="admin").role_id
                 new_admin = UserRoles(
@@ -341,11 +336,9 @@ def update_details(request):
                 ser = ContactsSerializer(new_contact)
         return Response("ok", status=status.HTTP_201_CREATED)            
 
-        
-
     except DvUser.DoesNotExist:
         return Response(
-            data={"username": ["No such username exists."]},
+            "No such username exists.",
             status=status.HTTP_400_BAD_REQUEST,
         )
 
@@ -475,20 +468,20 @@ def add_form(request):
     data = request.data.copy()
     print(data)
     err = {}
-    if "name" not in request.data:
-        err["name"] = ["This field is required."]
+    if "title" not in request.data:
+        err["title"] = ["This field is required."]
     if "description" not in request.data:
         err["description"] = ["This field is required."]
-    if "attachmentlink" not in request.data:
-        err["attachmentlink"] = ["This field is required."]
+    if "link" not in request.data:
+        err["link"] = ["This field is required."]
     
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     
     new_form = ApplicationForms(
-        name=data["name"],
+        name=data["title"],
         description=data["description"],
-        attachmentlink = data["attachmentlink"],
+        attachmentlink = data["link"],
     )
     new_form.save()
     ser = ApplicationFormsSerializer(new_form)
@@ -514,16 +507,25 @@ def add_dependent(request):
     print(data)
     #print("You are in register user method")
     err = {}
-    if "firstname" not in request.data:
+    if "firstName" not in request.data:
         err["firstname"] = ["This field is required."]
     if "dob" not in request.data:
         err["dob"] = ["This field is required."]
+    if "username" not in request.data:
+        err["username"] = ["This field is required."]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)       
+
+    N = 8
+    res = ''.join(random.choices(string.ascii_uppercase + string.digits, k = N)) 
+    res_hashed = bcrypt.hashpw(
+        res.encode("utf-8"), bcrypt.gensalt()
+    )
+    decoded_pw = res_hashed.decode("utf-8")
   
     new_user = DvUser(
-        username= None,
-        password= None,
+        username= data["username"],
+        password= decoded_pw,
         ispasswordreset = False,
         loginrequired = False,
         scandumpdata = None,
@@ -532,20 +534,20 @@ def add_dependent(request):
 
     user_address = UserAddress(
         dv_user = new_user,
-        houseno = data["houseno"], 
-        wardno = data["wardno"],
+        houseno = data["houseNo"], 
+        wardno = data["wardNo"],
         street = data["street"],
-        pin = data["pin"],
+        pin = data["pincode"],
         landmark = data["landmark"]
     )
     user_address.save()
 
     user_details = UserDetails(
         dv_user = new_user,
-        firstname=data["firstname"],
-        lastname=data["lastname"],
-        aadhaarno=data["aadharno"],
-        mobileno = data["mobileno"],
+        firstname=data["firstName"],
+        lastname=data["lastName"],
+        aadhaarno=data["aadharNo"],
+        mobileno = data["contact"],
         dob = data["dob"],
         profession = data["profession"],
         user_address = user_address

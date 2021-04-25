@@ -117,7 +117,7 @@ class UserDetails(models.Model):
 	
 	class Meta:
 		db_table = 'user_details'
-		unique_together = (('aadhaarno', 'mobileno'),)
+		# unique_together = (('aadhaarno', 'mobileno'),)
 
 
 class UserPaymentsReminders(models.Model):

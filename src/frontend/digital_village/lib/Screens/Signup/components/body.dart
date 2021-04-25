@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                 },
               ),
               RoundedInputField(
-                hintText: "D.O.B",
+                hintText: "D.O.B (YYYY-MM-DD)",
                 icon: Icons.calendar_today,
                 onChanged: (value) {
                   dob = value;
@@ -158,24 +158,8 @@ class _BodyState extends State<Body> {
               RoundedButton(
                 text: "Register",
                 press: () async {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return LoginScreen();
-                  //     },
-                  //   ),
-                  // );
                   await _sendData();
                   if (retCode == 201) {
-                    // final snackBar = SnackBar(
-                    //     content: Text(
-                    //         ),
-                    //     action: SnackBarAction(
-                    //       label: "Close",
-                    //       onPressed: () {},
-                    //     ));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(

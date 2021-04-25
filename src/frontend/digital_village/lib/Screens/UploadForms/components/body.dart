@@ -4,17 +4,32 @@ import '../../Dashboard/dashboard.dart';
 import '../components/background.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_input_field.dart';
-import '../../../components/already_have_an_account_acheck.dart';
-import '../../../components/rounded_password_field.dart';
-import '../../../constants.dart';
-import '../../../Screens/Signup/components/qrcode.dart';
-import '../../../components/floating_action_buttoncus.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart' as http;
 
-class Body extends StatelessWidget {
+var title, description, link, ret, retCode;
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    Future<void> _sendData() async {
+      var url = Uri.parse('http://127.0.0.1:8000/api/add_form');
+      var response = await http.post(url, body: {
+        "title": title,
+        "description": description,
+        "link": link,
+      });
+      setState(() {
+        ret = response.body;
+        retCode = response.statusCode;
+      });
+    }
+
     return Scaffold(
       body: Background(
         child: SingleChildScrollView(
@@ -30,29 +45,47 @@ class Body extends StatelessWidget {
               RoundedInputField(
                 hintText: "Title",
                 icon: Icons.title_rounded,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  title = value;
+                },
               ),
               RoundedInputField(
                 hintText: "Description",
                 icon: Icons.wysiwyg_outlined,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  description = value;
+                },
               ),
               RoundedInputField(
                 hintText: "Link.",
                 icon: Icons.link_rounded,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  link = value;
+                },
               ),
               RoundedButton(
                 text: "Upload Form",
-                press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return Dashboard();
-                      },
-                    ),
-                  );
+                press: () async {
+                  await _sendData();
+                  if (retCode == 201) {
+                    final snackBar = SnackBar(
+                        content: Text("Upload Successful"),
+                        action: SnackBarAction(
+                          label: "Close",
+                          onPressed: () {},
+                        ));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else if (ret == null) {
+                    ;
+                  } else {
+                    final snackBar = SnackBar(
+                        content: Text(ret),
+                        action: SnackBarAction(
+                          label: "Close",
+                          onPressed: () {},
+                        ));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 },
               ),
               // SizedBox(height: size.height * 0.03),
