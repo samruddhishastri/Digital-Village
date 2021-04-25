@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'digital_village',
         "USER": "postgres",
         "HOST": "127.0.0.1",
-        "PASSWORD": "passwd",
+        "PASSWORD": "password",
     }
 }
 

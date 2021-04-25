@@ -300,12 +300,22 @@ def update_details(request):
         err["mobileno"] = ["This field is required."]
     if "profession" not in request.data:
         err["profession"] = ["This field is required."]
+    if "wardNo" not in request.data:
+        err["wardNo"] = ["This field is required."]
+    if "houseNo" not in request.data:
+        err["houseNo"] = ["This field is required."]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = DvUser.objects.get(username=request.data["username"])
-        #user_address = UserAddress.objects.get(user=user)
+        user_address = UserAddress.objects.get(user=user)
+        user_address.houseno = data["houseNo"]
+        user_address.wardno = data["wardNo"]
+        user_address.street = data["street"]
+        user_address.pin = data["pincode"]
+        user_address.landmark = data["landmark"]
+        user_address.save()
         user_details = UserDetails.objects.get(dv_user=user)
         user_details.mobileno = data["mobileno"]
         user_details.profession = data["profession"]
