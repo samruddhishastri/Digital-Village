@@ -76,6 +76,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_search_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_search_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -177,6 +184,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  responsive_context:
+    dependency: transitive
+    description:
+      name: responsive_context
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
+  responsive_table:
+    dependency: "direct main"
+    description:
+      name: responsive_table
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1+8"
   sky_engine:
     dependency: transitive
     description: flutter

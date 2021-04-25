@@ -7,7 +7,10 @@ import '../../UpdateDetails/update_screen.dart';
 import '../../UploadForms/upload_forms.dart';
 import '../../DownloadForms/download_forms.dart';
 import '../../ResetPassword/reset_password.dart';
+import '../../Complaint/complaint_screen.dart';
 import '../../AddAnnouncements/addannouncements_scree.dart';
+import '../../AddDependent/add_dependent.dart';
+import '../../Analytics/analytics_screen.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
@@ -29,16 +32,38 @@ class Body extends StatelessWidget {
             padding: EdgeInsets.all(15),
             child: Column(
               children: <Widget>[
-                Icon(
-                  Icons.people_alt_outlined,
-                  size: 40,
-                  color: Colors.white,
+                NiceButton(
+                  mini: true,
+                  icon: Icons.people_alt_outlined,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AddDependentScreen();
+                        },
+                      ),
+                    );
+                  },
                 ),
                 Text('Add Dependents\n', style: TextStyle(color: Colors.white)),
-                Icon(
-                  Icons.face,
-                  size: 40,
-                  color: Colors.white,
+                NiceButton(
+                  mini: true,
+                  icon: Icons.face,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ComplaintScreen();
+                        },
+                      ),
+                    );
+                  },
                 ),
                 Text('Complaints\n', style: TextStyle(color: Colors.white)),
               ],
@@ -196,6 +221,23 @@ class Body extends StatelessWidget {
                 ),
                 Text('Add Announcements\n',
                     style: TextStyle(color: Colors.white)),
+                NiceButton(
+                  mini: true,
+                  icon: Icons.bar_chart,
+                  radius: 40,
+                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AnalyticsScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Text('Analytics\n', style: TextStyle(color: Colors.white)),
               ],
             ),
           ),

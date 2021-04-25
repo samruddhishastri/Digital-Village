@@ -33,6 +33,8 @@ dependencies:
   nice_button: ^0.1.7
   url_launcher: ^5.7.10
   http: ^0.13.1
+  responsive_table: ^0.1.1+8
+  flutter_search_bar: ^2.1.0
 
 dev_dependencies:
   flutter_test:
