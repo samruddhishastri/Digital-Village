@@ -15,16 +15,40 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
+Function display_data() {
+  for (int i = 0; i < (data.length); i++) {
+    DataRow(cells: [
+      DataCell(Text('${data[i]["name"].toString()}')),
+      DataCell(Text('${data[i]["description"].toString()}')),
+      DataCell(
+        IconButton(
+          icon: new Icon(Icons.download_rounded),
+          onPressed: () {
+            url_launcher('${data[i]["attachmentlink"].toString()}');
+          },
+        ),
+      ),
+    ]);
+  }
+}
+
+var data;
+
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Future<void> _getData() async {
-      var url = Uri.parse('http://127.0.0.1:8000/api/view_contacts');
+      var url = Uri.parse('http://127.0.0.1:8000/api/view_forms');
       var response = await http.get(url);
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
+      // print(response);
+      setState(() {
+        data = response.body;
+      });
     }
 
+    _getData();
     return Scaffold(
         appBar: AppBar(
           title: Text('Download Forms'),
@@ -46,57 +70,7 @@ class _BodyState extends State<Body> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))
             ],
             rows: [
-              DataRow(cells: [
-                DataCell(Text('Title1')),
-                DataCell(Text('Description1')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.download_rounded),
-                    onPressed: () {
-                      url_launcher('http://flutter.dev');
-                    },
-                  ),
-                ),
-              ]),
-              DataRow(cells: [
-                DataCell(Text('Title2')),
-                DataCell(Text('Description2')),
-                // DataCell(Text('xyz@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.download_rounded),
-                    onPressed: () {
-                      url_launcher('http://flutter.dev');
-                    },
-                  ),
-                )
-              ]),
-              DataRow(cells: [
-                DataCell(Text('Title3')),
-                DataCell(Text('Description3')),
-                // DataCell(Text('mno@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.download_rounded),
-                    onPressed: () {
-                      url_launcher('http://flutter.dev');
-                    },
-                  ),
-                )
-              ]),
-              DataRow(cells: [
-                DataCell(Text('Title4')),
-                DataCell(Text('Description4')),
-                // DataCell(Text('pqr@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.download_rounded),
-                    onPressed: () {
-                      url_launcher('http://flutter.dev');
-                    },
-                  ),
-                )
-              ]),
+              display_data();
             ],
           ),
         ]));
