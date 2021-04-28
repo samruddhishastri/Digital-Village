@@ -19,7 +19,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Future<List> _getData() async {
-      var url = Uri.parse('http://127.0.0.1:8000/api/view_contacts');
+      var url = Uri.parse('http://20.62.249.138/api/view_contacts');
       var response = await http.get(url);
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');

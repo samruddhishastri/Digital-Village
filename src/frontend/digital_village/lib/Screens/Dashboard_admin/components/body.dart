@@ -22,107 +22,226 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-        child: Row(children: <Widget>[
-      Container(
-        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-        padding: EdgeInsets.all(1),
-        child: Row(children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(5),
-            child: Column(
-              children: <Widget>[
-                NiceButton(
-                  mini: true,
-                  icon: Icons.update_rounded,
-                  radius: 40,
-                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return UpdateDetailScreen();
-                        },
-                      ),
-                    );
-                  },
+        child: Container(
+            alignment: Alignment.topCenter,
+            margin: EdgeInsets.symmetric(vertical: 20.0),
+            height: 1000.0,
+            child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(5),
+                child: Column(
+                  children: <Widget>[
+                    NiceButton(
+                      mini: true,
+                      icon: Icons.update_rounded,
+                      radius: 40,
+                      gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UpdateDetailScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Text('Update Contacts\n',
+                        style: TextStyle(color: Colors.white)),
+                    NiceButton(
+                      mini: true,
+                      icon: Icons.upload_rounded,
+                      radius: 40,
+                      gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UploadFormsScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Text('Upload Forms\n',
+                        style: TextStyle(color: Colors.white)),
+                    NiceButton(
+                      mini: true,
+                      icon: Icons.refresh_rounded,
+                      radius: 40,
+                      gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ResetPasswordScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Text('Reset Password\n',
+                        style: TextStyle(color: Colors.white)),
+                    NiceButton(
+                      mini: true,
+                      icon: Icons.announcement_rounded,
+                      radius: 40,
+                      gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AddAnnouncementsScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Text('Add Announcements\n',
+                        style: TextStyle(color: Colors.white)),
+                    NiceButton(
+                      mini: true,
+                      icon: Icons.face,
+                      radius: 40,
+                      gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ComplaintScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Text('Complaints\n', style: TextStyle(color: Colors.white)),
+                    NiceButton(
+                      mini: true,
+                      icon: Icons.bar_chart,
+                      radius: 40,
+                      gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AnalyticsScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    Text('Analytics\n', style: TextStyle(color: Colors.white)),
+                  ],
                 ),
-                Text('Update Contacts\n',
-                    style: TextStyle(color: Colors.white)),
-                NiceButton(
-                  mini: true,
-                  icon: Icons.upload_rounded,
-                  radius: 40,
-                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return UploadFormsScreen();
-                        },
-                      ),
-                    );
-                  },
-                ),
-                Text('Upload Forms\n', style: TextStyle(color: Colors.white)),
-                NiceButton(
-                  mini: true,
-                  icon: Icons.refresh_rounded,
-                  radius: 40,
-                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ResetPasswordScreen();
-                        },
-                      ),
-                    );
-                  },
-                ),
-                Text('Reset Password\n', style: TextStyle(color: Colors.white)),
-                NiceButton(
-                  mini: true,
-                  icon: Icons.announcement_rounded,
-                  radius: 40,
-                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return AddAnnouncementsScreen();
-                        },
-                      ),
-                    );
-                  },
-                ),
-                Text('Add Announcements\n',
-                    style: TextStyle(color: Colors.white)),
-                NiceButton(
-                  mini: true,
-                  icon: Icons.bar_chart,
-                  radius: 40,
-                  gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return AnalyticsScreen();
-                        },
-                      ),
-                    );
-                  },
-                ),
-                Text('Analytics\n', style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ),
-        ]),
-      ),
-    ]));
+              ),
+            ])));
+    //     child: Row(children: <Widget>[
+    //   Container(
+    //     margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+    //     padding: EdgeInsets.all(1),
+    //     child: Row(children: <Widget>[
+    //       Container(
+    //         padding: EdgeInsets.all(5),
+    //         child: Column(
+    //           children: <Widget>[
+    //             NiceButton(
+    //               mini: true,
+    //               icon: Icons.update_rounded,
+    //               radius: 40,
+    //               gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+    //               onPressed: () {
+    //                 Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                     builder: (context) {
+    //                       return UpdateDetailScreen();
+    //                     },
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //             Text('Update Contacts\n',
+    //                 style: TextStyle(color: Colors.white)),
+    //             NiceButton(
+    //               mini: true,
+    //               icon: Icons.upload_rounded,
+    //               radius: 40,
+    //               gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+    //               onPressed: () {
+    //                 Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                     builder: (context) {
+    //                       return UploadFormsScreen();
+    //                     },
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //             Text('Upload Forms\n', style: TextStyle(color: Colors.white)),
+    //             NiceButton(
+    //               mini: true,
+    //               icon: Icons.refresh_rounded,
+    //               radius: 40,
+    //               gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+    //               onPressed: () {
+    //                 Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                     builder: (context) {
+    //                       return ResetPasswordScreen();
+    //                     },
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //             Text('Reset Password\n', style: TextStyle(color: Colors.white)),
+    //             NiceButton(
+    //               mini: true,
+    //               icon: Icons.announcement_rounded,
+    //               radius: 40,
+    //               gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+    //               onPressed: () {
+    //                 Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                     builder: (context) {
+    //                       return AddAnnouncementsScreen();
+    //                     },
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //             Text('Add Announcements\n',
+    //                 style: TextStyle(color: Colors.white)),
+    //             NiceButton(
+    //               mini: true,
+    //               icon: Icons.bar_chart,
+    //               radius: 40,
+    //               gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+    //               onPressed: () {
+    //                 Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                     builder: (context) {
+    //                       return AnalyticsScreen();
+    //                     },
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //             Text('Analytics\n', style: TextStyle(color: Colors.white)),
+    //           ],
+    //         ),
+    //       ),
+    //     ]),
+    //   ),
+    // ]));
   }
 }
