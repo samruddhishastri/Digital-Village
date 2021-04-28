@@ -10,6 +10,22 @@ Future<void> url_launcher(String url) async {
   }
 }
 
+class Form{
+  final String name;
+  final String description;
+  final String attachmentlink;
+  
+  Form({this.name, this.description, this.attachmentlink});
+  
+  factory Form.fromJson(Map<String, dynamic> json) {
+    return Form(
+      name: json['name'],
+      description: json['description'],
+      attachmentlink: json['attachmentlink'],
+    );
+  }
+}
+
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
