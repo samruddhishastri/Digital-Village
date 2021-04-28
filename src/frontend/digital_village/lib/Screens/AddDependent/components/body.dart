@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../Login/login_screen.dart';
 import '../components/background.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_input_field.dart';
-import '../../../components/already_have_an_account_acheck.dart';
-import '../../../components/rounded_password_field.dart';
-import '../../../constants.dart';
-import '../../../Screens/Signup/components/qrcode.dart';
-import '../../../components/floating_action_buttoncus.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../../../Screens/Login/components/background.dart';
 import '../../Signup/signup_screen.dart';
 import '../../Dashboard/dashboard.dart';
+import '../../Dashboard_admin/dashboard_admin.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_input_field.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../components/rounded_password_field.dart';
-import 'package:flutter_svg/svg.dart';
-import 'dart:convert';
+import 'package:temp/components/rounded_dropdown_field.dart';
 import 'package:http/http.dart' as http;
 
-var username, password, ret, retCode;
+var username, password, ret, retCode, role;
 
 class Body extends StatefulWidget {
   const Body({
@@ -30,6 +30,7 @@ class _BodyState extends State<Body> {
       var response = await http.post(url, body: {
         "username": username,
         "password": password,
+        "role": role,
       });
       setState(() {
         ret = response.body;
@@ -65,16 +66,47 @@ class _BodyState extends State<Body> {
                 });
               },
             ),
+            DropDownField(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: role,
+                style: TextStyle(color: Colors.black),
+                items: <String>['User', 'Admin']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                hint: Text(
+                  "Please choose a category",
+                ),
+                onChanged: (String value) {
+                  setState(() {
+                    role = value;
+                  });
+                },
+              ),
+            ),
             RoundedButton(
               text: "LOGIN",
               press: () async {
                 await _sendData();
-                if (retCode == 201) {
+                if (retCode == 201 && role == 'User') {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
                         return Dashboard();
+                      },
+                    ),
+                  );
+                } else if (retCode == 201 && role == 'Admin') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return DashboardAdmin();
                       },
                     ),
                   );

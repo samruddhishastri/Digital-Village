@@ -194,6 +194,8 @@ def login_user(request):
         err["username"] = ["This field is required."]
     if "password" not in request.data:
         err["password"] = ["This field is required."]
+    if "role" not in request.data:
+        err["role"] = ["This field is required."]
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
     try:
@@ -211,7 +213,27 @@ def login_user(request):
         )
         new_token = Session(user=user, key=token)
         new_token.save()
-        return Response({"token": token}, status=status.HTTP_201_CREATED)
+
+        try:
+            user = DvUser.objects.get(username=request.data["username"])
+            check_role = UserRoles.objects.get(user_id=user)
+            assignrole = Role.objects.get(name="admin").role_id
+            if(check_role.role_id == assignrole):
+                return Response({"token": token}, status=status.HTTP_201_CREATED)
+            else:
+                if(request.data["role"] == "User"):
+                    return Response({"token": token}, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(
+                        data={"username": ["You've no admin access!"]},
+                        status=status.HTTP_400_BAD_REQUEST,)
+        except UserRoles.DoesNotExist:
+            if(request.data["role"] == "User"):
+                    return Response({"token": token}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(
+                    data={"username": ["You've no admin access!"]},
+                    status=status.HTTP_400_BAD_REQUEST,)
     else:
         return Response(
             data={"password": ["Incorrect password."]},
@@ -225,7 +247,7 @@ def make_complaint(request):
     data = request.data.copy()
     print(data)
     err = {}
-    if "name" not in request.data:
+    if "title" not in request.data:
         err["name"] = ["This field is required."]
     if "description" not in request.data:
         err["description"] = ["This field is required."]
@@ -342,51 +364,6 @@ def update_details(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-# @api_view(["POST"])
-# @authentication_classes([])
-# @permission_classes([])
-# def add_admin(request):
-    
-
-#     data = request.data.copy()
-#     print(data)
-#     #print("You are in register user method")
-#     err = {}
-#     if "username" not in request.data:
-#         err["username"] = ["This field is required."]
-   
-#     if err:
-#         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
-
-#     try:
-#         user = DvUser.objects.get(username=request.data["username"]) 
-
-#     except DvUser.DoesNotExist:
-#         return Response(
-#             data={"username": ["No such username exists."]},
-#             status=status.HTTP_400_BAD_REQUEST,
-#         )
-
-#     try:
-
-#         user1 = UserRoles.objects.get(user_id=user)
-#         return Response(
-#             data={
-#                 "username": ["This username is already an admin."]
-#             },
-#             status=status.HTTP_400_BAD_REQUEST,
-#         )
-#     except UserRoles.DoesNotExist:
-#         assignrole = Role.objects.get(name="admin").role_id
-#         new_admin = UserRoles(
-#             user_id=user.dv_user_id,
-#             role_id=assignrole
-#         )
-#         new_admin.save()
-
-#         ser = UserRolesSerializer(new_admin)
-#         return Response("ok", status=status.HTTP_201_CREATED)
-
 @api_view(["POST"])
 @authentication_classes([])
 @permission_classes([])
@@ -418,7 +395,6 @@ def update_complaint_status(request):
             data={"complaint_id": ["No such complaint_id exists."]},
             status=status.HTTP_400_BAD_REQUEST,
         )
-
 
 @api_view(["POST"])
 @authentication_classes([])

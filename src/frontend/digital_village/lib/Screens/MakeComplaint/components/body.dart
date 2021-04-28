@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../Dashboard/dashboard.dart';
 import '../components/background.dart';
 import 'package:temp/components/rounded_dropdown_field.dart';
-import 'package:temp/components/rounded_dropdown_category.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_input_field.dart';
 import 'package:http/http.dart' as http;
