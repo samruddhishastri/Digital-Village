@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -31,64 +32,70 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-Function display_data() {
-  for (int i = 0; i < (data.length); i++) {
-    DataRow(cells: [
-      DataCell(Text('${data[i]["name"].toString()}')),
-      DataCell(Text('${data[i]["description"].toString()}')),
-      DataCell(
-        IconButton(
-          icon: new Icon(Icons.download_rounded),
-          onPressed: () {
-            url_launcher('${data[i]["attachmentlink"].toString()}');
-          },
+class _BodyState extends State<Body> {
+  // Future<List<Forms>> getd;
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  @override
+  List docList;
+  int len = 0;
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('List Of Forms'),
+          backgroundColor: Colors.purple[300],
         ),
-      ),
-    ]);
+        body: ListView.builder(
+          itemCount: len,
+          itemBuilder: (context, index) {
+            print(docList[index].runtimeType);
+            if (docList[index] != null) {
+              return Forms(req: (docList[index]));
+            } else {
+              return Container();
+            }
+          },
+        ));
+  }
+
+  getData() async {
+    var url = Uri.parse('http://20.62.249.138/api/view_forms');
+    final response = await http.get(url);
+
+    List temp = jsonDecode(response.body);
+    print(temp);
+    setState(() {
+      docList = temp;
+      len = temp.length;
+    });
   }
 }
 
-var data;
-
-class _BodyState extends State<Body> {
+class Forms extends StatelessWidget {
+  var req;
+  Forms({this.req});
   @override
   Widget build(BuildContext context) {
-    Future<void> _getData() async {
-      var url = Uri.parse('http://127.0.0.1:8000/api/view_forms');
-      var response = await http.get(url);
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      // print(response);
-      setState(() {
-        data = response.body;
-      });
-    }
-
-    _getData();
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Download Forms'),
-        ),
-        body: ListView(children: <Widget>[
-          DataTable(
-            columns: [
-              DataColumn(
-                  label: Text('Title',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Description',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Download',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))
-            ],
-            rows: [
-              display_data();
-            ],
-          ),
-        ]));
+    return Padding(
+        padding: EdgeInsets.only(top: 2),
+        child: Card(
+            shape:
+                Border(left: BorderSide(color: Colors.purple[300], width: 5)),
+            margin: EdgeInsets.fromLTRB(6, 6, 6, 6),
+            child: Column(children: <Widget>[
+              ListTile(
+                isThreeLine: true,
+                title: Text(req['name']),
+                subtitle: Text(req['description']),
+                trailing: IconButton(
+                  icon: Icon(Icons.download_rounded),
+                  onPressed: () => {url_launcher(req['attachmentlink'])},
+                ),
+              ),
+            ])));
   }
 }

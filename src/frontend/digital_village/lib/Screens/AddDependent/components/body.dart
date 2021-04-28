@@ -30,7 +30,7 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
 
     Future<void> _sendData() async {
-      var url = Uri.parse('http://127.0.0.1:8000/api/add_dependent');
+      var url = Uri.parse('http://20.62.249.138/api/add_dependent');
       var response = await http.post(url, body: {
         "firstName": firstName,
         "lastName": lastName,

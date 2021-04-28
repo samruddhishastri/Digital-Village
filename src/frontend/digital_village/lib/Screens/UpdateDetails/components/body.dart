@@ -27,7 +27,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     Future<void> _sendData() async {
-      var url = Uri.parse('http://127.0.0.1:8000/api/update_details');
+      var url = Uri.parse('http://20.62.249.138/api/update_details');
       var response = await http.post(url, body: {
         "username": username,
         "houseNo": houseno,

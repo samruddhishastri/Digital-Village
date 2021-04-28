@@ -25,7 +25,7 @@ class _BodyState extends State<Body> {
           new DateTime(tenDaysLater.year, tenDaysLater.month, tenDaysLater.day);
       var dateTime = DateTime.parse(date.toString());
       var formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
-      var url = Uri.parse('http://127.0.0.1:8000/api/add_announcement');
+      var url = Uri.parse('http://20.62.249.138/api/add_announcement');
       var response = await http.post(url, body: {
         "name": title,
         "description": description,
