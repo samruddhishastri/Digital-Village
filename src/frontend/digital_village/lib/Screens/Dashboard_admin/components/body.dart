@@ -47,7 +47,7 @@ class Body extends StatelessWidget {
                         );
                       },
                     ),
-                    Text('Update Contacts\n',
+                    Text('Update Details\n',
                         style: TextStyle(color: Colors.white)),
                     NiceButton(
                       mini: true,
