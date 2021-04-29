@@ -58,7 +58,6 @@ class _BodyState extends State<Body> {
   }
 
   getData() async {
-    print("Entered1");
     var url = Uri.parse(
         'http://20.62.249.138/api/detail_complaint/' + widget.id.toString());
     final response = await http.get(url);

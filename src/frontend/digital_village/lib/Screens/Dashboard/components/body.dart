@@ -10,6 +10,7 @@ import '../../ResetPassword/reset_password.dart';
 import '../../Complaint/complaint_screen.dart';
 import '../../AddAnnouncements/addannouncements_scree.dart';
 import '../../AddDependent/add_dependent.dart';
+import '../../ViewAnnouncements/view_announcements.dart';
 import '../../Analytics/analytics_screen.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -218,7 +219,7 @@ class Body extends StatelessWidget {
                     );
                   },
                 ),
-                Text('Add Announcements\n',
+                Text('View Announcements\n',
                     style: TextStyle(color: Colors.white)),
                 NiceButton(
                   mini: true,
@@ -230,7 +231,7 @@ class Body extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return AnalyticsScreen();
+                          return ViewAnnoucementScreen();
                         },
                       ),
                     );
