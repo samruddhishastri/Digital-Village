@@ -43,6 +43,19 @@ class _BodyState extends State<Body> {
     getData();
   }
 
+  getData() async {
+    var url = Uri.parse(
+        'http://20.62.249.138/api/detail_complaint/' + widget.id.toString());
+    final response = await http.get(url);
+
+    final temp = await jsonDecode(response.body);
+    // print(temp);
+    setState(() {
+      docList = temp;
+      len = temp.length;
+    });
+  }
+
   @override
   var docList;
   int len = 0;
@@ -53,23 +66,32 @@ class _BodyState extends State<Body> {
         title: Text('Complaint Details'),
         backgroundColor: Colors.orange[300],
       ),
-      body: Text(docList.toString()),
+      body: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            ListTile(
+              // name: title, description: description, attachmentlink: link, status: open,
+              title: Text("${docList['name']}"),
+              subtitle: Text(
+                "${docList['status']}",
+                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.link_outlined),
+                onPressed: () => {url_launcher(docList['attachmentlink'])},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "${docList['description']}",
+                style: TextStyle(color: Colors.black.withOpacity(0.6)),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
-
-  getData() async {
-    print("Entered1");
-    var url = Uri.parse(
-        'http://20.62.249.138/api/detail_complaint/' + widget.id.toString());
-    final response = await http.get(url);
-
-    final temp = jsonDecode(response.body);
-    print(temp);
-    setState(() {
-      docList = temp;
-      len = temp.length;
-    });
-  }
 }
-
-/*5V3OQXZX*/

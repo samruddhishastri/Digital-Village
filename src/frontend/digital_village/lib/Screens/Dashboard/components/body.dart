@@ -10,6 +10,7 @@ import '../../ResetPassword/reset_password.dart';
 import '../../Complaint/complaint_screen.dart';
 import '../../AddAnnouncements/addannouncements_scree.dart';
 import '../../AddDependent/add_dependent.dart';
+import '../../ViewAnnouncements/view_announcements.dart';
 import '../../Analytics/analytics_screen.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -116,6 +117,24 @@ class Body extends StatelessWidget {
                     },
                   ),
                   Text('Download Forms\n',
+                      style: TextStyle(color: Colors.white)),
+                  NiceButton(
+                    mini: true,
+                    icon: Icons.download_rounded,
+                    radius: 40,
+                    gradientColors: [Color(0xfffc4a0f), Color(0xfffc9d0f)],
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ViewAnnoucementScreen();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  Text('View Announcements\n',
                       style: TextStyle(color: Colors.white)),
                   NiceButton(
                     mini: true,
