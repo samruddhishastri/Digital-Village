@@ -11,13 +11,13 @@ Future<void> url_launcher(String url) async {
   }
 }
 
-class Form{
+class Form {
   final String name;
   final String description;
   final String attachmentlink;
-  
+
   Form({this.name, this.description, this.attachmentlink});
-  
+
   factory Form.fromJson(Map<String, dynamic> json) {
     return Form(
       name: json['name'],
@@ -47,7 +47,7 @@ class _BodyState extends State<Body> {
     return Scaffold(
         appBar: AppBar(
           title: Text('List Of Forms'),
-          backgroundColor: Colors.purple[300],
+          backgroundColor: Colors.orange[300],
         ),
         body: ListView.builder(
           itemCount: len,
@@ -84,7 +84,7 @@ class Forms extends StatelessWidget {
         padding: EdgeInsets.only(top: 2),
         child: Card(
             shape:
-                Border(left: BorderSide(color: Colors.purple[300], width: 5)),
+                Border(left: BorderSide(color: Colors.orange[300], width: 5)),
             margin: EdgeInsets.fromLTRB(6, 6, 6, 6),
             child: Column(children: <Widget>[
               ListTile(

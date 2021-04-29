@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 Future<void> _makePhoneCall(String url) async {
   if (await canLaunch(url)) {
@@ -16,94 +17,69 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  // Future<List<Forms>> getd;
   @override
-  Widget build(BuildContext context) {
-    Future<List> _getData() async {
-      var url = Uri.parse('http://20.62.249.138/api/view_contacts');
-      var response = await http.get(url);
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    }
+  void initState() {
+    super.initState();
+    getData();
+  }
 
+  @override
+  List docList;
+  int len = 0;
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Contact Us'),
+          backgroundColor: Colors.orange[300],
         ),
-        body: ListView(children: <Widget>[
-          DataTable(
-            columns: [
-              DataColumn(
-                  label: Text('Name',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Profession',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold))),
-              // DataColumn(
-              //     // label: Text('Email',
-              //         style: TextStyle(
-              //             fontSize: 18, fontWeight: FontWeight.bold))),
-              DataColumn(
-                  label: Text('Mobile No',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))
-            ],
-            rows: [
-              DataRow(cells: [
-                DataCell(Text('Stephen')),
-                DataCell(Text('Sarpanch')),
-                // DataCell(Text('abc@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.phone),
-                    onPressed: () {
-                      _makePhoneCall('tel:0597924917');
-                    },
-                  ),
+        body: ListView.builder(
+          itemCount: len,
+          itemBuilder: (context, index) {
+            print(docList[index].runtimeType);
+            if (docList[index] != null) {
+              return Forms(req: (docList[index]));
+            } else {
+              return Container();
+            }
+          },
+        ));
+  }
+
+  getData() async {
+    var url = Uri.parse('http://20.62.249.138/api/view_contacts');
+    final response = await http.get(url);
+
+    List temp = jsonDecode(response.body);
+    print(temp);
+    setState(() {
+      docList = temp;
+      len = temp.length;
+    });
+  }
+}
+
+class Forms extends StatelessWidget {
+  var req;
+  Forms({this.req});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 2),
+        child: Card(
+            shape:
+                Border(left: BorderSide(color: Colors.orange[300], width: 5)),
+            margin: EdgeInsets.fromLTRB(6, 6, 6, 6),
+            child: Column(children: <Widget>[
+              ListTile(
+                isThreeLine: true,
+                title: Text(req['name']),
+                subtitle: Text(req['profession']),
+                trailing: IconButton(
+                  icon: Icon(Icons.phone),
+                  onPressed: () => {_makePhoneCall('tel:${req['mobile_no']}')},
                 ),
-              ]),
-              DataRow(cells: [
-                DataCell(Text('John')),
-                DataCell(Text('VRO')),
-                // DataCell(Text('xyz@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.phone),
-                    onPressed: () {
-                      _makePhoneCall('tel:0597924917');
-                    },
-                  ),
-                )
-              ]),
-              DataRow(cells: [
-                DataCell(Text('Harry')),
-                DataCell(Text('Doctor')),
-                // DataCell(Text('mno@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.phone),
-                    onPressed: () {
-                      _makePhoneCall('tel:0597924917');
-                    },
-                  ),
-                )
-              ]),
-              DataRow(cells: [
-                DataCell(Text('Peter')),
-                DataCell(Text('Electrician')),
-                // DataCell(Text('pqr@gmail.com')),
-                DataCell(
-                  IconButton(
-                    icon: new Icon(Icons.phone),
-                    onPressed: () {
-                      _makePhoneCall('tel:0597924917');
-                    },
-                  ),
-                )
-              ]),
-            ],
-          ),
-        ]));
+              ),
+            ])));
   }
 }

@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
-import 'package:flutter/material.dart';
 import '../../Dashboard/dashboard.dart';
-import '../../Dashboard/dashboard.dart';
-import '../../Dashboard/dashboard.dart';
-import '../../Dashboard/dashboard.dart';
-import '../components/background.dart';
-import '../../Complaint/components/background.dart';
 import '../../../components/rounded_button.dart';
-import '../../../constants.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../ContactUs/components/body.dart';
 
 void main() {
   runApp(new Body());

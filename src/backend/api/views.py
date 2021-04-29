@@ -247,11 +247,10 @@ def make_complaint(request):
     data = request.data.copy()
     print(data)
     err = {}
-    if "title" not in request.data:
+    if "name" not in request.data:
         err["name"] = ["This field is required."]
     if "description" not in request.data:
         err["description"] = ["This field is required."]
-
     
     if err:
         return Response(data=err, status=status.HTTP_400_BAD_REQUEST)
@@ -543,3 +542,5 @@ def add_dependent(request):
 
     ser = DvUserSerializer(new_user)
     return Response("Success", status=status.HTTP_201_CREATED)
+
+#Y8USGYGF

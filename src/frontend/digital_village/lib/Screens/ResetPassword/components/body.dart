@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../Screens/Login/components/background.dart';
-
-import '../../Dashboard/dashboard.dart';
 import '../../../components/rounded_button.dart';
 import '../../../components/rounded_password_field.dart';
 import '../../../components/rounded_input_field.dart';

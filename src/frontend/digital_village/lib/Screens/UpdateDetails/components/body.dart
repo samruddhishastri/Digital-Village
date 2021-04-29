@@ -116,7 +116,10 @@ class _BodyState extends State<Body> {
                 },
               ),
               CheckBoxField(
-                child: Checkbox(
+                child: CheckboxListTile(
+                  title: Text(
+                    "Add Admin",
+                  ),
                   onChanged: (bool value) {
                     setState(() {
                       _isSelected = value;
